@@ -1,0 +1,11 @@
+urls(){
+
+        echo "++++++Extracting URLS+++++++";
+        echo "++++++Running GAU+++++++++"
+      gau $1 | grep "=" | egrep -iv ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|ico|pdf|svg|txt|js)" | qsreplace -a | tee $1_gau-data.txt
+        echo "+++++++Running waybackurls++++++++++"
+      waybackurls $1 | grep "=" | egrep -iv ".(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|ico|pdf|svg|txt|js)" | qsreplace -a | tee $1_wayback.txt
+        echo "Combining output"
+        cat *.txt | sort -u | tee urls.txt
+        rm $1_gau-data.txt  $1_wayback.txt
+}
